@@ -19,7 +19,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
-
+display: none;
   background: #e1251b;
   color: white;
   border: none;
@@ -60,17 +60,25 @@
         geometry="primitive: plane; height: 0.61; width: 1;"></a-entity> -->
     <!-- Note: "name:" must be set to the name of the image target -->
     <xrextras-named-image-target id="yuvrajTarget" name="yuvraj-target-image">
-       <a-entity id="videoPlane" xrextras-play-video="video: #yuvraj-video; canstop: true"
-        geometry="primitive: plane; height: 0.75; width: 1.25;"></a-entity>
-<a-plane
-  id="playBtn"
-  class="cantap"
-  width="0.3"
-  height="0.3"
-  position="0 0 0.01"
-  visible="true"
-  material="src: #yuvraj-thumb; transparent: true">
-</a-plane>
+
+  <!-- 🎬 VIDEO PLANE -->
+  <a-plane
+    id="videoPlane"
+    width="1.25"
+    height="0.75"
+    material="src: #yuvraj-thumb">
+  </a-plane>
+
+  <!-- ▶️ PLAY BUTTON -->
+  <a-plane
+    id="playBtn"
+    class="cantap"
+    width="0.3"
+    height="0.3"
+    position="0 0 0.02"
+    material="src: #yuvraj-thumb; transparent: true">
+  </a-plane>
+
     </xrextras-named-image-target>
 
     <!-- Note: "name:" must be set to the name of the image target  -->
@@ -104,12 +112,12 @@
     var duration = video.duration; // Get the total duration of the video in seconds
     var leftTime = duration - currentTime; 
     console.log(`Time left: ${currentTime}`); // Calculate the remaining time (time left)
-    if (currentTime >= 0.04) {
-if (!running) {
-   running = true;
-    btn.style.display = 'block'
-    console.log('✅ Button shown at 4%')
-}
+    if (currentTime >= 4) {
+    if (!running) {
+      running = true;
+        btn.style.display = 'block'
+        console.log('✅ Button shown at 4%')
+    }
   }
 }
   // 👁 IMAGE FOUND
