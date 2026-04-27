@@ -11,9 +11,32 @@
   <script src="https://cdn.jsdelivr.net/npm/@8thwall/engine-binary@1/dist/xr.js" async crossorigin="anonymous" data-preload-chunks="slam"></script>
   <script src="https://cdn.jsdelivr.net/npm/@8thwall/landing-page@1/dist/landing-page.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@8thwall/xrextras@1/dist/xrextras.js" crossorigin="anonymous"></script>
+
+    <style>
+.map-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+
+  background: #e1251b;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  font-size: 16px;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+
+  cursor: pointer;
+}
+</style>
 </head>
 <body>
   <script src="bundle.js"></script>
+  <button id="mapBtn" class="map-btn" style="display: none;">
+  📍 Open Directions
+</button>
   <a-scene xrextras-gesture-detector landing-page xrextras-loading xrextras-runtime-error
     renderer="colorManagement:true" xrweb="disableWorldTracking: true">
 
@@ -40,10 +63,102 @@
     </xrextras-named-image-target>
 
     <!-- Note: "name:" must be set to the name of the image target  -->
- 
+     <a-plane
+      id="hotspot1"
+      class="cantap"
+      width="0.4"
+      height="0.2"
+      position="0 0 0.01"
+      material="color: red; opacity: 0.3">
+    </a-plane>
 
   </a-scene>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const video = document.querySelector('#yuvraj-video')
+  const plane = document.querySelector('#videoPlane')
+  const target = document.querySelector('#yuvrajTarget')
 
+  if (!video || !plane || !target) {
+    console.log('❌ Elements not found')
+    return
+  }
+
+  // ✅ CLICK → play video with sound
+  plane.addEventListener('click', () => {
+    video.muted = false
+    video.currentTime = 0
+
+    video.play().then(() => {
+      console.log('▶ Video playing with sound')
+
+      // switch from thumb → video
+      plane.setAttribute('material', 'src', '#yuvraj-video')
+    }).catch(err => {
+      console.log('Autoplay blocked:', err)
+    })
+  })
+
+  // ❌ TARGET LOST → pause + mute + reset to thumbnail
+  target.addEventListener('targetLost', () => {
+    console.log('❌ Target Lost')
+
+    video.pause()
+    video.muted = true
+
+    // show thumbnail again
+    plane.setAttribute('material', 'src', '#yuvraj-thumb')
+  })
+
+  // ✅ TARGET FOUND → do nothing (wait for tap)
+  target.addEventListener('targetFound', () => {
+    console.log('✅ Target Found')
+  })
+})
+
+  document.addEventListener('DOMContentLoaded', () => {
+  const video = document.querySelector('#yuvraj-video')
+  const btn = document.getElementById('mapBtn')
+
+  // 🎬 When video completes
+  video.addEventListener('ended', () => {
+    console.log('✅ Video completed')
+
+    btn.style.display = 'block'
+  })
+})
+document.getElementById('mapBtn').addEventListener('click', () => {
+
+  if (!navigator.geolocation) {
+    alert("Geolocation not supported")
+    return
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+
+      const userLat = position.coords.latitude
+      const userLng = position.coords.longitude
+
+      // 📍 Destination (your metro station)
+      const destLat = 28.585781
+      const destLng = 77.311326
+
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destLat},${destLng}&travelmode=driving`
+
+      window.open(url, '_blank')
+    },
+    (err) => {
+      alert("Location permission denied ❌")
+      console.log(err)
+    },
+    {
+      enableHighAccuracy: true
+    }
+  )
+
+})
+</script>
 </body>
 
 </html>
