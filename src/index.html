@@ -20,8 +20,8 @@
     <a-assets>
       <!-- Credit to Poly by Google for the model: https://poly.google.com/view/dA5osnS0Rzj -->
       <!-- <a-asset-item id="jelly-glb" src="assets/jellyfish-model.glb"></a-asset-item> -->
-      <img id="jelly-thumb" src="./assets/yuvraj-target-image.jpg">
-      <video id="jelly-video" autoplay muted crossorigin="anonymous" loop="true" src="assets/yuvraj-target-video.mp4">
+      <img id="yuvraj-thumb" src="./assets/yuvraj-target-image.png">
+      <video id="yuvraj-video" autoplay muted crossorigin="anonymous" loop="true" src="assets/yuvraj-target-video.mp4">
       </video>
     </a-assets>
 
@@ -34,7 +34,7 @@
       
     <!-- Note: "name:" must be set to the name of the image target -->
     <xrextras-named-image-target name="yuvraj-target-image">
-      <a-entity xrextras-play-video="video: #jelly-video; thumb: #jelly-thumb; canstop: true"
+      <a-entity xrextras-play-video="video: #yuvraj-video; thumb: #yuvraj-thumb; canstop: true"
         geometry="primitive: plane; height: 0.61; width: 1;"></a-entity>
     </xrextras-named-image-target>
 
