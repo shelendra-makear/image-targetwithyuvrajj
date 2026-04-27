@@ -92,10 +92,20 @@
   })
 
   // 🎬 VIDEO END → SHOW BUTTON
-  video.addEventListener('ended', () => {
-    btn.style.display = 'block'
-  })
+ let shown = false
 
+video.addEventListener('timeupdate', () => {
+  if (!video.duration) return
+
+  const progress = video.currentTime / video.duration
+
+  // 🎯 35% reached
+  if (progress >= 0.35 && !shown) {
+    shown = true
+    btn.style.display = 'block'
+    console.log('✅ Button shown at 35%')
+  }
+})
   // 👁 IMAGE FOUND
   window.addEventListener('xrimagefound', (e) => {
     console.log('✅ XR IMAGE FOUND:', e.detail.name)
