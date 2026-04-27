@@ -1,0 +1,23 @@
+{
+  "imagePath": "image-targets/yuvraj-target-image_luminance.jpg",
+  "metadata": null,
+  "name": "yuvraj-target-image",
+  "type": "PLANAR",
+  "properties": {
+    "left": 0,
+    "top": 280,
+    "width": 1831,
+    "height": 2441,
+    "isRotated": true,
+    "originalWidth": 1831,
+    "originalHeight": 3000
+  },
+  "resources": {
+    "originalImage": "yuvraj-target-image_original.jpg",
+    "croppedImage": "yuvraj-target-image_cropped.jpg",
+    "thumbnailImage": "yuvraj-target-image_thumbnail.jpg",
+    "luminanceImage": "yuvraj-target-image_luminance.jpg"
+  },
+  "created": 1777268392739,
+  "updated": 1777268392739
+}
