@@ -43,9 +43,10 @@
     <a-assets>
       <!-- Credit to Poly by Google for the model: https://poly.google.com/view/dA5osnS0Rzj -->
       <!-- <a-asset-item id="jelly-glb" src="assets/jellyfish-model.glb"></a-asset-item> -->
-      <img id="yuvraj-thumb" src="./assets/yuvraj-target-image.png">
+      <!-- <img id="yuvraj-thumb" src="./assets/yuvraj-target-image.png"> -->
+       <img id="yuvraj-thumb" src="./assets/play-button5.png">
       <video id="yuvraj-video" muted playsinline
-  webkit-playsinline crossorigin="anonymous" src="assets/yuvraj-target-video.mp4">
+  webkit-playsinline crossorigin="anonymous" src="assets/yuvraj-target-video.mp4#t=0.01">
       </video>
     </a-assets>
 
@@ -59,19 +60,21 @@
         geometry="primitive: plane; height: 0.61; width: 1;"></a-entity> -->
     <!-- Note: "name:" must be set to the name of the image target -->
     <xrextras-named-image-target id="yuvrajTarget" name="yuvraj-target-image">
-       <a-entity id="videoPlane" xrextras-play-video="video: #yuvraj-video; thumb: #yuvraj-thumb; canstop: true"
+       <a-entity id="videoPlane" xrextras-play-video="video: #yuvraj-video; canstop: true"
         geometry="primitive: plane; height: 0.75; width: 1.25;"></a-entity>
+<a-plane
+  id="playBtn"
+  class="cantap"
+  width="0.3"
+  height="0.3"
+  position="0 0 0.01"
+  visible="true"
+  material="src: #yuvraj-thumb; transparent: true">
+</a-plane>
     </xrextras-named-image-target>
 
     <!-- Note: "name:" must be set to the name of the image target  -->
-     <a-plane
-      id="hotspot1"
-      class="cantap"
-      width="0.4"
-      height="0.2"
-      position="0 0 0.01"
-      material="color: red; opacity: 0.3">
-    </a-plane>
+     
 
   </a-scene>
 <script>
@@ -80,9 +83,11 @@
   const video = document.getElementById('yuvraj-video')
   const plane = document.getElementById('videoPlane')
   const btn = document.getElementById('mapBtn')
+  const playBtn = document.getElementById('playBtn')
 
   // ▶️ TAP → PLAY VIDEO
-  plane.addEventListener('click', () => {
+  playBtn.addEventListener('click', () => {
+    playBtn.setAttribute('visible', false)
     video.muted = false
     video.currentTime = 0
 
@@ -114,7 +119,7 @@ if (!running) {
   // ❌ IMAGE LOST (THIS IS THE FIX)
   window.addEventListener('xrimagelost', (e) => {
     console.log('❌ XR IMAGE LOST:', e.detail.name)
-
+playBtn.setAttribute('visible', true)
     video.pause()
     video.muted = true
     btn.style.display = 'none'
