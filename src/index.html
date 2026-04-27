@@ -55,10 +55,10 @@
     <a-light type="directional" intensity="0.5" position="1 1 1"></a-light>
 
     <a-light type="ambient" intensity="1"></a-light>
-      
+     
     <!-- Note: "name:" must be set to the name of the image target -->
     <xrextras-named-image-target id="yuvrajTarget" name="yuvraj-target-image">
-      <a-entity id="videoPlane" xrextras-play-video="video: #yuvraj-video; thumb: #yuvraj-thumb; canstop: true"
+       <a-entity id="videoPlane" xrextras-play-video="video: #yuvraj-video; thumb: #yuvraj-thumb; canstop: true"
         geometry="primitive: plane; height: 0.61; width: 1;"></a-entity>
     </xrextras-named-image-target>
 
@@ -117,11 +117,11 @@
 })
 
   document.addEventListener('DOMContentLoaded', () => {
-  const video = document.querySelector('#yuvraj-video')
+  const videotime = document.getElementById('videoPlane')
   const btn = document.getElementById('mapBtn')
 
   // 🎬 When video completes
-  video.addEventListener('ended', () => {
+  videotime.addEventListener('ended', () => {
     console.log('✅ Video completed')
 
     btn.style.display = 'block'
