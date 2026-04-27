@@ -44,8 +44,8 @@
       <!-- Credit to Poly by Google for the model: https://poly.google.com/view/dA5osnS0Rzj -->
       <!-- <a-asset-item id="jelly-glb" src="assets/jellyfish-model.glb"></a-asset-item> -->
       <img id="yuvraj-thumb" src="./assets/yuvraj-target-image.png">
-      <video id="yuvraj-video" autoplay muted  playsinline
-  webkit-playsinline crossorigin="anonymous" loop="true" src="assets/yuvraj-target-video.mp4">
+      <video id="yuvraj-video" muted playsinline
+  webkit-playsinline crossorigin="anonymous" src="assets/yuvraj-target-video.mp4">
       </video>
     </a-assets>
 
@@ -75,90 +75,71 @@
   </a-scene>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-  const video = document.querySelector('#yuvraj-video')
-  const plane = document.querySelector('#videoPlane')
-  const target = document.querySelector('#yuvrajTarget')
 
-  if (!video || !plane || !target) {
+  const video = document.getElementById('yuvraj-video')
+  const plane = document.getElementById('videoPlane')
+  const target = document.getElementById('yuvrajTarget')
+  const btn = document.getElementById('mapBtn')
+
+  if (!video || !plane || !target || !btn) {
     console.log('❌ Elements not found')
     return
   }
 
-  // ✅ CLICK → play video with sound
+  // ▶️ TAP → PLAY VIDEO WITH SOUND
   plane.addEventListener('click', () => {
     video.muted = false
     video.currentTime = 0
 
     video.play().then(() => {
-      console.log('▶ Video playing with sound')
-
-      // switch from thumb → video
       plane.setAttribute('material', 'src', '#yuvraj-video')
     }).catch(err => {
       console.log('Autoplay blocked:', err)
     })
   })
 
-  // ❌ TARGET LOST → pause + mute + reset to thumbnail
-  target.addEventListener('targetLost', () => {
-    console.log('❌ Target Lost')
+  // 🎬 WHEN VIDEO ENDS → SHOW BUTTON
+  video.addEventListener('ended', () => {
+    console.log('✅ Video completed')
+    btn.style.display = 'block'
+  })
 
+  // ❌ TARGET LOST → RESET EVERYTHING
+  target.addEventListener('targetLost', () => {
     video.pause()
     video.muted = true
+    btn.style.display = 'none'
 
-    // show thumbnail again
     plane.setAttribute('material', 'src', '#yuvraj-thumb')
   })
 
-  // ✅ TARGET FOUND → do nothing (wait for tap)
-  target.addEventListener('targetFound', () => {
-    console.log('✅ Target Found')
-  })
-})
+  // 📍 BUTTON CLICK → OPEN MAP
+  btn.addEventListener('click', () => {
 
-  document.addEventListener('DOMContentLoaded', () => {
-  const videotime = document.getElementById('videoPlane')
-  const btn = document.getElementById('mapBtn')
+    if (!navigator.geolocation) {
+      alert("Geolocation not supported")
+      return
+    }
 
-  // 🎬 When video completes
-  videotime.addEventListener('ended', () => {
-    console.log('✅ Video completed')
+    navigator.geolocation.getCurrentPosition((pos) => {
 
-    btn.style.display = 'block'
-  })
-})
-document.getElementById('mapBtn').addEventListener('click', () => {
+      const userLat = pos.coords.latitude
+      const userLng = pos.coords.longitude
 
-  if (!navigator.geolocation) {
-    alert("Geolocation not supported")
-    return
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-
-      const userLat = position.coords.latitude
-      const userLng = position.coords.longitude
-
-      // 📍 Destination (your metro station)
       const destLat = 28.585781
       const destLng = 77.311326
 
       const url = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destLat},${destLng}&travelmode=driving`
 
       window.open(url, '_blank')
-    },
-    (err) => {
-      alert("Location permission denied ❌")
-      console.log(err)
-    },
-    {
-      enableHighAccuracy: true
-    }
-  )
 
-})
-</script>
+    }, () => {
+      alert("Location permission denied ❌")
+    })
+
+  })
+
+})</script>
 </body>
 
 </html>
